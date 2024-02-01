@@ -1,7 +1,9 @@
 #include "tests/Tests.h"
 
 int main() {
-    tests::printExp();
+    tests::testFloat();
+    tests::testDouble();
+    tests::testLongDouble();
 
     return 0;
 }
