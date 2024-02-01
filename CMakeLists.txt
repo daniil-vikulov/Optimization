@@ -3,4 +3,10 @@ project(untitled2)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(untitled2 main.cpp Logger.cpp)
+include_directories(external/include)
+include_directories(include)
+
+file(GLOB_RECURSE SRC src/*.cpp)
+file(GLOB_RECURSE SRC_TESTS tests/*.cpp)
+
+add_executable(lab1 main.cpp ${SRC} ${SRC_TESTS})
