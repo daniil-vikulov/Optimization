@@ -8,13 +8,22 @@
 #include "Logger.h"
 
 template<typename F>
+constexpr F Sqrt2 = std::sqrt(F(2));
+
+template<typename F>
+constexpr F Ln2 = std::log(F(2)); //TODO нафиг
+
+template<typename F>
+constexpr F Eps = std::numeric_limits<F>::epsilon(); //TODO нафиг
+
+template<typename F>
 F expTaylor(F x) {
     F sum = 1.0;
     F term = 1.0;
-    F curr_eps = Sqrt2 * x;
+    F curr_eps = Sqrt2<F> * x;
     int n = 1;
     
-    while (curr_eps > 10.0 * Eps) {
+    while (curr_eps > 10.0 * Eps<F>) {
         term *= x / n;
         sum += term;
         curr_eps *= x / (n+1);
@@ -23,15 +32,6 @@ F expTaylor(F x) {
 
     return sum;
 }
-
-template<typename F>
-constexpr F Sqrt2 = std::sqrt(F(2));
-
-template<typename F>
-constexpr F Ln2 = std::log(F(2)); //TODO нафиг
-
-template<typename F>
-constexpr F Eps = std::numeric_limits<F>::epsilon(); //TODO нафиг
 
 template<typename F>
 F exponent(F x) {
