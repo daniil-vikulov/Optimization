@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LOGGER_HPP
+#define LOGGER_HPP
 
 #include <vector>
 #include <iostream>
@@ -45,3 +46,5 @@ private:
 #define logF(...) Logger::fatal(__FILE__, __VA_ARGS__)
 #define logE(...) Logger::error(__FILE__, __VA_ARGS__)
 #define logW(...) Logger::warning(__FILE__, __VA_ARGS__)
+
+#endif

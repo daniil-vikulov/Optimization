@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TESTS_HPP
+#define TESTS_HPP
 
 namespace tests{
 
@@ -11,3 +12,5 @@ namespace tests{
     ///@brief test exponent function in long double mode
     void testLongDouble();
 }
+
+#endif
