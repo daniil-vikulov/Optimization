@@ -1,6 +1,6 @@
 #include "Tests.h"
 
-#include "Exp.hpp"
+#include "Exp.h"
 
 template<typename T>
 bool areEqual(T a, T b, T epsilon = std::numeric_limits<T>::epsilon() * 100) {
