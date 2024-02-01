@@ -6,15 +6,7 @@
 #include <cassert>
 
 #include "Logger.h"
-
-template<typename F>
-constexpr F Sqrt2 = std::sqrt(F(2));
-
-template<typename F>
-constexpr F Ln2 = std::log(F(2)); //TODO нафиг
-
-template<typename F>
-constexpr F Eps = std::numeric_limits<F>::epsilon(); //TODO нафиг
+#include "Consts.h"
 
 template<typename F>
 F expTaylor(F x) {
