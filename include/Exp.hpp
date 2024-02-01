@@ -8,17 +8,24 @@
 #include "Logger.h"
 
 template<typename F>
-F expTaylor(F x, int n) {
+F expTaylor(F x) {
     F sum = 1.0;
     F term = 1.0;
-
-    for (int i = 1; i <= n; ++i) {
-        term *= x / i;
+    F curr_eps = Sqrt2 * x;
+    int n = 1;
+    
+    while (curr_eps > 10.0 * Eps) {
+        term *= x / n;
         sum += term;
+        curr_eps *= x / (n+1);
+        n++;
     }
 
     return sum;
 }
+
+template<typename F>
+constexpr F Sqrt2 = std::sqrt(F(2));
 
 template<typename F>
 constexpr F Ln2 = std::log(F(2)); //TODO нафиг
@@ -53,7 +60,7 @@ F exponent(F x) {
     F result = std::ldexp(F(1), static_cast<int>(yIntPart));
 
     auto temp = (double) (yFracPart * Ln2<F>);
-    result *= expTaylor(temp, 10);
+    result *= expTaylor(temp);
 
     return result;
 }
