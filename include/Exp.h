@@ -90,6 +90,11 @@ template <typename F> constexpr F exponent(F x) {
 
   result *= expTaylor(temp);
 
+  if (result <= 0 && x > 0) {
+      return std::numeric_limits<F>::infinity();
+  }
+
+
   return result;
 }
 } // namespace adaai::solution

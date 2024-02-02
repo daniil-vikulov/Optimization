@@ -1,64 +1,30 @@
 #include "Tests.h"
 
-#include "../include/Exp.h"
+#include "Exp.h"
+#include "Functions.h"
 
 using namespace adaai::solution;
 using namespace adaai;
 
-template <typename F>
-bool areEqualNegative(F a, F b,
-                      F epsilon = std::numeric_limits<F>::epsilon() * 10) {
-  if (std::isinf(a)) {
-    if (std::isinf(b)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  F err = std::abs(a - b);
-  if (err <= epsilon) {
-    return true;
-  }
-
-  return false;
-}
-
-template <typename F>
-bool areEqualPositive(F a, F b,
-                      F epsilon = std::numeric_limits<F>::epsilon() * 10) {
-  if (std::isinf(a)) {
-    if (std::isinf(b)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  F err = std::abs(a / b - 1.0);
-  if (err <= epsilon) {
-    return true;
-  }
-
-  return false;
-}
 
 template <typename F> void testExponent(F x) {
   F result = exponent(x);
   F expected = std::exp(x);
   if (std::isnan(result)) {
     if (!std::isnan(expected)) {
-      logF("Test failed:", result, "is not equal to", expected);
+      logF("Nan test failed:", result, "is not equal to", expected, "for value:", x);
     } else {
       logI("Test passed: all is nan");
     }
     return;
   }
   if (x <= 0) {
-    if (!areEqualNegative(result, expected)) {
-      logF("Test failed:", result, "is not equal to", expected);
+    if (!tests::areEqualNegative(result, expected)) {
+      logF("Negative test failed:", result, "is not equal to", expected, "for value:", x);
     }
   } else {
-    if (!areEqualPositive(result, expected)) {
-      logF("Test failed:", result, "is not equal to", expected);
+    if (!tests::areEqualPositive(result, expected)) {
+      logF("Positive test failed:", result, "is not equal to", expected, "for value:", x);
     }
   }
 }
@@ -66,11 +32,11 @@ template <typename F> void testExponent(F x) {
 void tests::testFloat() {
   logI("Testing exponent in float mode...");
 
-  const int count = 100000;
+  const int count = 100000000;
   const float lower_limit = -2147483649.5f;
   const float upper_limit = 2147483648.5f;
 
-  srand(static_cast<unsigned int>(time(0)));
+  srand(static_cast<unsigned int>(time(nullptr)));
 
   for (int i = 0; i < count; ++i) {
     float random_value =
@@ -97,11 +63,11 @@ void tests::testFloat() {
 void tests::testDouble() {
   logI("Testing exponent in double mode...");
 
-  const int count = 100000;
+  const int count = 50000000;
   const double lower_limit = -2147483649.5;
   const double upper_limit = 2147483649.5;
 
-  srand(static_cast<unsigned int>(time(0)));
+  srand(static_cast<unsigned int>(time(nullptr)));
 
   for (int i = 0; i < count; ++i) {
     double random_value =
@@ -128,11 +94,11 @@ void tests::testDouble() {
 void tests::testLongDouble() {
   logI("Testing exponent in long double mode...");
 
-  const int count = 100000;
+  const int count = 10000000;
   const long double lower_limit = -2147483649.5l;
   const long double upper_limit = 2147483649.5l;
 
-  srand(static_cast<unsigned int>(time(0)));
+  srand(static_cast<unsigned int>(time(nullptr)));
 
   for (int i = 0; i < count; ++i) {
     long double random_value = (static_cast<long double>(rand()) / RAND_MAX) *
