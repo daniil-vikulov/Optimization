@@ -1,7 +1,7 @@
 #include "Tests.h"
 
-#include "Exp.h"
-#include "Logger.h"
+#include "../include/Exp.h"
+#include "../include/Logger.h"
 
 using namespace adaai::solution;
 using namespace adaai;
