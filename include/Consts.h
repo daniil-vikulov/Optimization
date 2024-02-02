@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <cfloat>
+#include "GccConsts.h"
 
 namespace adaai::solution {
     template<typename F>
