@@ -1,5 +1,5 @@
-#ifndef TESTS_HPP
-#define TESTS_HPP
+#ifndef TESTS_H
+#define TESTS_H
 
 namespace adaai::tests{
     ///@brief test exponent function in float mode

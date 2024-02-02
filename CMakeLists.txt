@@ -9,4 +9,5 @@ include_directories(include)
 file(GLOB_RECURSE SRC src/*.cpp)
 file(GLOB_RECURSE SRC_TESTS tests/*.cpp)
 
-add_executable(lab1 main.cpp ${SRC} ${SRC_TESTS})
+add_executable(lab1 main.cpp ${SRC} ${SRC_TESTS}
+        include/GccConsts.h)

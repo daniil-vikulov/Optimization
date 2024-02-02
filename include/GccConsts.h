@@ -1,0 +1,22 @@
+#ifndef MATH_CONSTS_H
+#define MATH_CONSTS_H
+
+#include <cmath>
+
+#ifndef M_LOG2Ef
+#define M_LOG2Ef 1.4426950408889634074f
+#endif
+
+#ifndef M_LOG2El
+#define M_LOG2El 1.442695040888963407359924681001892137L
+#endif
+
+#ifndef M_SQRT2f
+#define M_SQRT2f 1.41421356237309504880f
+#endif
+
+#ifndef M_SQRT2l
+#define  M_SQRT2l 1.414213562373095048801688724209698079L
+#endif
+
+#endif

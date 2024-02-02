@@ -1,15 +1,16 @@
-#ifndef EXP_HPP
-#define EXP_HPP
+#ifndef EXP_H
+#define EXP_H
 
 #include <iostream>
 #include <cmath>
 #include <limits>
 #include <cassert>
-#include<type_traits>
+#include <type_traits>
 #include <climits>
 
 #include "Logger.h"
 #include "Consts.h"
+#include "GccConsts.h"
 
 namespace adaai::solution {
     template<typename F>
