@@ -4,6 +4,8 @@
 #include <iomanip>
 #include <algorithm>
 
+using namespace adaai::solution;
+
 std::string Logger::parseFileName(const char *logType, const char *filePath) {
     std::string src = filePath;
     std::string ans;

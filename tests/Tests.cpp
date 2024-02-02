@@ -1,5 +1,10 @@
 #include "Tests.h"
-#include "../include/Exp.h"
+
+#include "Exp.h"
+#include "Logger.h"
+
+using namespace adaai::solution;
+using namespace adaai;
 
 template<typename F>
 bool areEqualNegative(F a, F b, F epsilon = std::numeric_limits<F>::epsilon() * 600) {
