@@ -6,13 +6,13 @@
 using namespace adaai::solution;
 using namespace adaai;
 
-
 template <typename F> void testExponent(F x) {
   F result = exponent(x);
   F expected = std::exp(x);
   if (std::isnan(result)) {
     if (!std::isnan(expected)) {
-      logF("Nan test failed:", result, "is not equal to", expected, "for value:", x);
+      logF("Nan test failed:", result, "is not equal to", expected,
+           "for value:", x);
     } else {
       logI("Test passed: all is nan");
     }
@@ -20,11 +20,13 @@ template <typename F> void testExponent(F x) {
   }
   if (x <= 0) {
     if (!tests::areEqualNegative(result, expected)) {
-      logF("Negative test failed:", result, "is not equal to", expected, "for value:", x);
+      logF("Negative test failed:", result, "is not equal to", expected,
+           "for value:", x);
     }
   } else {
     if (!tests::areEqualPositive(result, expected)) {
-      logF("Positive test failed:", result, "is not equal to", expected, "for value:", x);
+      logF("Positive test failed:", result, "is not equal to", expected,
+           "for value:", x);
     }
   }
 }
