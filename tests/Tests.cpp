@@ -1,13 +1,13 @@
 #include "Tests.h"
 
-#include "Exp.h"
+#include "../include/Exp.h"
 
 using namespace adaai::solution;
 using namespace adaai;
 
 template <typename F>
 bool areEqualNegative(F a, F b,
-                      F epsilon = std::numeric_limits<F>::epsilon() * 600) {
+                      F epsilon = std::numeric_limits<F>::epsilon() * 10) {
   if (std::isinf(a)) {
     if (std::isinf(b)) {
       return true;
@@ -25,7 +25,7 @@ bool areEqualNegative(F a, F b,
 
 template <typename F>
 bool areEqualPositive(F a, F b,
-                      F epsilon = std::numeric_limits<F>::epsilon() * 600) {
+                      F epsilon = std::numeric_limits<F>::epsilon() * 10) {
   if (std::isinf(a)) {
     if (std::isinf(b)) {
       return true;
@@ -66,6 +66,19 @@ template <typename F> void testExponent(F x) {
 void tests::testFloat() {
   logI("Testing exponent in float mode...");
 
+  const int count = 100000;
+  const float lower_limit = -2147483649.5f;
+  const float upper_limit = 2147483648.5f;
+
+  srand(static_cast<unsigned int>(time(0)));
+
+  for (int i = 0; i < count; ++i) {
+    float random_value =
+        (static_cast<float>(rand()) / RAND_MAX) * (upper_limit - lower_limit) +
+        lower_limit;
+    testExponent<float>(random_value);
+  }
+
   testExponent(0.f);
   testExponent(1.f);
   testExponent(-1.f);
@@ -84,6 +97,19 @@ void tests::testFloat() {
 void tests::testDouble() {
   logI("Testing exponent in double mode...");
 
+  const int count = 100000;
+  const double lower_limit = -2147483649.5;
+  const double upper_limit = 2147483649.5;
+
+  srand(static_cast<unsigned int>(time(0)));
+
+  for (int i = 0; i < count; ++i) {
+    double random_value =
+        (static_cast<double>(rand()) / RAND_MAX) * (upper_limit - lower_limit) +
+        lower_limit;
+    testExponent<double>(random_value);
+  }
+
   testExponent(0.f);
   testExponent(1.f);
   testExponent(-1.f);
@@ -101,6 +127,19 @@ void tests::testDouble() {
 
 void tests::testLongDouble() {
   logI("Testing exponent in long double mode...");
+
+  const int count = 100000;
+  const long double lower_limit = -2147483649.5l;
+  const long double upper_limit = 2147483649.5l;
+
+  srand(static_cast<unsigned int>(time(0)));
+
+  for (int i = 0; i < count; ++i) {
+    long double random_value = (static_cast<long double>(rand()) / RAND_MAX) *
+                                   (upper_limit - lower_limit) +
+                               lower_limit;
+    testExponent<long double>(random_value);
+  }
 
   testExponent(0.l);
   testExponent(1.l);
