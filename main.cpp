@@ -5,12 +5,12 @@
 
 
 int main() {
-    // tests::testFloat();
+    tests::testFloat();
     // tests::testDouble();
     // tests::testLongDouble();
-    float a = -3.7;
+    // float a = -3.7;
 
-    std::cout << std::setprecision(20) << exponent(a);
+    // std::cout << std::setprecision(20) << exponent(a);
 
-    return 0;
+    // return 0;
 }

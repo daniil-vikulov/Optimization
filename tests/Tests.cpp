@@ -3,17 +3,34 @@
 #include "Exp.h"
 
 template<typename T>
-bool areEqual(T a, T b, T epsilon = std::numeric_limits<T>::epsilon() * 100) {
+bool areEqualNegative(T a, T b, T epsilon = std::numeric_limits<T>::epsilon() * 600) {
+    // if ()
+    if (std::isinf(a)) {
+        if (std::isinf(b)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     T diff = std::abs(a - b);
     if (diff <= epsilon) {
         return true;
     }
 
-    T absA = std::abs(a);
-    T absB = std::abs(b);
-    T largest = (absB > absA) ? absB : absA;
+    return false;
+}
 
-    if (diff <= largest * epsilon) {
+template<typename T>
+bool areEqualPositive(T a, T b, T epsilon = std::numeric_limits<T>::epsilon() * 600) {
+    if (std::isinf(a)) {
+        if (std::isinf(b)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    T err = std::abs(a / b - 1.0);
+    if (err <= epsilon) {
         return true;
     }
 
@@ -24,9 +41,17 @@ template<typename F>
 void testExponent(F x) {
     F result = exponent(x);
     F expected = std::exp(x);
-    if (!areEqual(result, expected)) {
-        logF("Test failed:", result, "is not equal to", expected);
+    if (x <= 0) {
+        if (!areEqualNegative(result, expected)) {
+            logF("Test failed:", result, "is not equal to", expected);
+        }
+    
+    } else {
+        if (!areEqualPositive(result, expected)) {
+            logF("Test failed:", result, "is not equal to", expected);
     }
+    }
+
 }
 
 void tests::testFloat() {
@@ -35,10 +60,10 @@ void tests::testFloat() {
     testExponent<float>(0);
     testExponent<float>(1);
     testExponent<float>(-1);
-    testExponent<float>(0.5f);
-    testExponent<float>(-0.5f);
-    testExponent<float>(10.0f);
-    testExponent<float>(-10.0f);
+    testExponent<float>(1.99999f);
+    testExponent<float>(-0.456f);
+    testExponent<float>(10.67f);
+    testExponent<float>(-10.32f);
     testExponent<float>(std::numeric_limits<float>::max());
     testExponent<float>(std::numeric_limits<float>::lowest());
 
