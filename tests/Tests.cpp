@@ -81,12 +81,14 @@ void tests::testDouble() {
     logI("Testing exponent in double mode...");
 
     testExponent<double>(0);
-    testExponent<double>(2);
-    testExponent<double>(-2);
-    testExponent<double>(0.5);
-    testExponent<double>(-0.5);
-    testExponent<double>(10.0);
-    testExponent<double>(-10.0);
+    testExponent<double>(1);
+    testExponent<double>(-1);
+    testExponent<double>(1.99999);
+    testExponent<double>(-0.456);
+    testExponent<double>(10.67);
+    testExponent<double>(-15.32);
+    testExponent<double>(-std::numeric_limits<double>::infinity());
+    testExponent<double>(std::numeric_limits<double>::infinity());
     testExponent<double>(std::numeric_limits<double>::max());
     testExponent<double>(std::numeric_limits<double>::lowest());
 
@@ -97,14 +99,18 @@ void tests::testLongDouble() {
     logI("Testing exponent in long double mode...");
 
     testExponent<long double>(0);
-    testExponent<long double>(1);
-    testExponent<long double>(-1);
-    testExponent<long double>(0.5L);
-    testExponent<long double>(-0.5L);
-    testExponent<long double>(10.0L);
-    testExponent<long double>(-10.0L);
+    testExponent<long double>(1L);
+    testExponent<long double>(-1L);
+    testExponent<long double>(1.99999L);
+    testExponent<long double>(-0.456L);
+    testExponent<long double>(10.67L);
+    testExponent<long double>(-15.32L);
+    testExponent<long double>(-std::numeric_limits<long double>::infinity());
+    testExponent<long double>(std::numeric_limits<long double>::infinity());
     testExponent<long double>(std::numeric_limits<long double>::max());
     testExponent<long double>(std::numeric_limits<long double>::lowest());
+
+    
 
     logI("Long double mode is tested!!!");
 }

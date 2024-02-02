@@ -42,7 +42,6 @@ constexpr F exponent(F x) {
 
     F intPart;
     F fracPart = std::modf(x, &intPart);
-    // std::cout << intPart << " " << fracPart << "\n";
 
     if (std::abs(fracPart) > F(0.5)) {
         if (x > 0) {
@@ -53,7 +52,6 @@ constexpr F exponent(F x) {
             intPart -= F(1);
         } 
     }
-    // std::cout << intPart << " " << fracPart << "\n";
 
     if (intPart < INT_MIN) {
         return F(0.0);
@@ -64,8 +62,6 @@ constexpr F exponent(F x) {
     F y = x / Ln2<F>;
     F yIntPart;
     F yFracPart = std::modf(y, &yIntPart);
-
-    // std::cout << yIntPart << " " << yFracPart << "\n";
 
     if (std::abs(yFracPart) > F(0.5)) {
         if (y > 0) {
@@ -82,8 +78,6 @@ constexpr F exponent(F x) {
     } else if (yIntPart > INT_MAX) {
         return std::numeric_limits<F>::infinity();
     }
-
-    // std::cout << yIntPart << " " << yFracPart << "\n";
 
     F result = std::ldexp(F(1), static_cast<int>(yIntPart));
 

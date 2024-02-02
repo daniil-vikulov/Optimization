@@ -5,15 +5,9 @@
 
 
 int main() {
-    // tests::testFloat();
+    tests::testFloat();
     tests::testDouble();
-    // tests::testLongDouble();
+    tests::testLongDouble();
 
-    std::cout << std::numeric_limits<float>::epsilon() << "\n";
-        std::cout << std::numeric_limits<double>::epsilon() << "\n";
-    // float a = -3.7;
-
-    // std::cout << std::setprecision(20) << exponent(a);
-
-    // return 0;
+    return 0;
 }
