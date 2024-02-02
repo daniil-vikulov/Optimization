@@ -12,6 +12,7 @@
 #include "GccConsts.h"
 #include "Logger.h"
 
+///@brief calculates exponent using Taylor formula
 namespace adaai::solution {
 template <typename F> F expTaylor(F x) {
   F sum = 1.0;
@@ -33,6 +34,7 @@ template <typename F> F expTaylor(F x) {
   return sum;
 }
 
+///@brief calculates exponent. Analog to std::exp()
 template <typename F> constexpr F exponent(F x) {
   static_assert(std::is_floating_point<F>::value,
                 "Not a floating point number");
