@@ -58,9 +58,9 @@ template <typename F> constexpr F exponent(F x) {
     }
   }
 
-  if (intPart < INT_MIN) {
+  if (intPart < static_cast<F>(INT_MIN)) {
     return F(0.0);
-  } else if (intPart > INT_MAX) {
+  } else if (intPart > static_cast<F>(INT_MAX)) {
     return std::numeric_limits<F>::infinity();
   }
 
@@ -78,13 +78,13 @@ template <typename F> constexpr F exponent(F x) {
     }
   }
 
-  if (yIntPart < INT_MIN) {
+  if (yIntPart < static_cast<F>(INT_MIN)) {
     return F(0.0);
-  } else if (yIntPart > INT_MAX) {
+  } else if (yIntPart > static_cast<F>(INT_MAX)) {
     return std::numeric_limits<F>::infinity();
   }
 
-  F result = std::ldexp(F(1), static_cast<int>(yIntPart));
+  F result = std::ldexp(F(1), yIntPart);
 
   auto temp = yFracPart * Ln2<F>;
 
