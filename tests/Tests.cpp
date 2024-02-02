@@ -103,7 +103,7 @@ void tests::testDouble() {
 void tests::testLongDouble() {
   logI("Testing exponent in long double mode...");
 
-  testExponent<long double>(0);
+  testExponent<long double>(0L);
   testExponent<long double>(1L);
   testExponent<long double>(-1L);
   testExponent<long double>(1.99999L);
