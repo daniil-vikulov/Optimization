@@ -4,7 +4,6 @@
 #include <cmath>
 #include <cfloat>
 
-
 template<typename F>
 constexpr inline F Ln2;
 
@@ -12,10 +11,10 @@ template<>
 constexpr inline float Ln2<float> = 1.f / M_LOG2E;
 
 template<>
-constexpr inline float Ln2<double> = 1 / M_LOG2E;
+constexpr inline double Ln2<double> = 1 / M_LOG2E;
 
 template<>
-constexpr inline float Ln2<long double> = 1.L / M_LOG2E;
+constexpr inline long double Ln2<long double> = 1.L / M_LOG2E;
 
 
 
