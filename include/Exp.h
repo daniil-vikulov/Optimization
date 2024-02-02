@@ -53,7 +53,7 @@ constexpr F exponent(F x) {
             intPart -= F(1);
         } 
     }
-    std::cout << intPart << " " << fracPart << "\n";
+    // std::cout << intPart << " " << fracPart << "\n";
 
     if (intPart < INT_MIN) {
         return F(0.0);
@@ -83,7 +83,7 @@ constexpr F exponent(F x) {
         return std::numeric_limits<F>::infinity();
     }
 
-    std::cout << yIntPart << " " << yFracPart << "\n";
+    // std::cout << yIntPart << " " << yFracPart << "\n";
 
     F result = std::ldexp(F(1), static_cast<int>(yIntPart));
 
