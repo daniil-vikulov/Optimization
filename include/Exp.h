@@ -15,7 +15,7 @@
 
 
 namespace adaai::solution {
-    enum class MethodE {
+    enum class Method {
         Pade,
         Taylor
     };
@@ -64,8 +64,9 @@ namespace adaai::solution {
     }
 
     ///@brief calculates exponent. Analog to std::exp()
-    template<typename F, MethodE M = MethodE::Pade>
-    constexpr F exponent(F x) {
+    ///@details uses Pade calculationMethod by default
+    template<typename F>
+    constexpr F exponent(F x, Method calculationMethod = Method::Pade) {
         static_assert(std::is_floating_point<F>::value,
                       "Not a floating point number");
 
@@ -118,10 +119,10 @@ namespace adaai::solution {
         F result = std::ldexp(F(1), yIntPart);
 
         auto temp = yFracPart * Ln2<F>;
-        if (M == MethodE::Taylor) {
+        if (calculationMethod == Method::Taylor) {
             constexpr int N = MKExpTaylorOrder<F>();
             result *= expTaylor(temp, N);
-        } else if (M == MethodE::Pade) {
+        } else if (calculationMethod == Method::Pade) {
             result *= expPade(temp);
         }
 

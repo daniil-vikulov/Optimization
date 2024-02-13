@@ -1,9 +1,8 @@
 #include "tests/Tests.h"
 
 int main() {
-    adaai::tests::testFloat();
-    adaai::tests::testDouble();
-    adaai::tests::testLongDouble();
+    adaai::tests::testPade();
+    adaai::tests::testTaylor();
 
     return 0;
 }
