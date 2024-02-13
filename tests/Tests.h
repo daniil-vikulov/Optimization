@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TESTS_H
+#define TESTS_H
 
 #include "Logger.h"
 
@@ -14,3 +15,5 @@ namespace adaai::tests {
     ///@brief test exponent function in long double mode
     void testLongDouble();
 }
+
+#endif

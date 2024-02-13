@@ -1,5 +1,5 @@
-#ifndef MATH_CONSTS_H
-#define MATH_CONSTS_H
+#ifndef GCC_CONSTS_H
+#define GCC_CONSTS_H
 
 #include <cmath>
 
