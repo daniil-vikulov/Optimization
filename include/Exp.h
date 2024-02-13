@@ -4,6 +4,7 @@
 #include <cassert>
 #include <climits>
 #include <cmath>
+#include <vector>
 #include <iostream>
 #include <limits>
 #include <type_traits>
@@ -44,12 +45,12 @@ template <typename F> F expPade(F x) {
   F curr_x = 1.0;
   F numerator = 0.0;
   F denominator = 0.0;
-  for(int i = coefficents.size(); i >=0; i--) {
+  for(int i = coefficients.size()-1; i >=0; i--) {
     F curr_term = coefficients[i] * curr_x;
     if( i % 2 != 0) {
-      denominator -= curr_term;
-    } else {
       denominator += curr_term;
+    } else {
+      denominator -= curr_term;
     }
     numerator += curr_term;
     curr_x *= x; 
@@ -67,8 +68,9 @@ template <typename F, MethodE M = MethodE::Pade> constexpr F exponent(F x) {
   if (std::isnan(x)) {
     return x;
   }
-  if (x == F(0))
+  if (x == F(0)) {
     return F(1);
+  }
   
   F intPart;
   F fracPart = std::modf(x, &intPart);
