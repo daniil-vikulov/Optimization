@@ -41,6 +41,6 @@ constexpr inline int MKExpTaylorOrder() {
   }
   assert(false); 
 }
-} // namespace adaai::solution
+
 
 #endif
