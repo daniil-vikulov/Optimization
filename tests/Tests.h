@@ -7,28 +7,31 @@ namespace adaai::tests {
     ///@brief checks whether GMP library has been linked correctly
     void checkGmpLib();
 
+
     ///@brief testing of Pade-based exponent calculation for float, double and long double
     void testPade();
 
     ///@brief testing of Taylor-based exponent calculation for float, double and long double
     void testTaylor();
 
-    //@brief internal testing  exponent function in float mode
+
+    //@brief internal Taylor-based exponent testing function in float mode
     void testFloatTaylor();
 
-    ///@brief test exponent function in double mode
+    ///@brief internal Taylor-based exponent testing function in double mode
     void testDoubleTaylor();
 
-    ///@brief test exponent function in long double mode
+    ///@brief internal Taylor-based exponent testing function in long double mode
     void testLongDoubleTaylor();
 
-    //@brief internal testing  exponent function in float mode
+
+    //@brief internal Pade-based exponent testing function in float mode
     void testFloatPade();
 
-    ///@brief test exponent function in double mode
+    ///@brief internal Pade-based exponent testing function in double mode
     void testDoublePade();
 
-    ///@brief test exponent function in long double mode
+    ///@brief internal Pade-based exponent testing function in long double mode
     void testLongDoublePade();
 }
 
