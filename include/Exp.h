@@ -9,9 +9,9 @@
 #include <limits>
 #include <type_traits>
 
-#include "Consts.h"
-#include "GccConsts.h"
-#include "Logger.h"
+#include "consts/Consts.h"
+#include "consts/GccConsts.h"
+#include "utils/Logger.h"
 
 
 namespace adaai::solution {
