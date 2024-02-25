@@ -15,10 +15,6 @@ namespace adaai::solution {
     constexpr int getZeroApproximation(int n) {
         return (n & 1) == 1 ? 0 : ((n & 3) == 0) ? 1 : -1;
     }
-
-    double calculateChebyshevSeries() {
-
-    }
 }
 
 
