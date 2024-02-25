@@ -7,9 +7,9 @@
 
 namespace adaai::solution {
     ///@brief genate
-    template<typename F>
-    std::vector<std::vector<F>> getChebyshevCoeffs(int n) {
-        //TODO
+
+    std::vector<std::vector<double>> getChebyshevCoeffs(int n) {
+        return {};
     }
 
     ///@brief fеу
@@ -18,8 +18,7 @@ namespace adaai::solution {
     }
 
     ///@brief calculates value of Chebyshev polynomial in a specific point
-    template<typename F>
-    F getChebApproximation (int n, F x) {
+    double getChebApproximation (int n, double x) {
         gsl_function expFunction;
 
         expFunction.function = func;
@@ -27,7 +26,7 @@ namespace adaai::solution {
         gsl_cheb_series *chebyshevSeries = gsl_cheb_alloc(n);
         gsl_cheb_init(chebyshevSeries, &expFunction, -1.0, 1.0);
 
-        F value = gsl_cheb_eval(chebyshevSeries, x);
+        double value = gsl_cheb_eval(chebyshevSeries, x);
 
         gsl_cheb_free(chebyshevSeries);
 

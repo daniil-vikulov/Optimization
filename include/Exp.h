@@ -65,30 +65,54 @@ namespace adaai::solution {
         return res;
     }
 
-    template<typename F>
-    void prepareChebSle(std::vector<std::vector<F>> &matrix, std::vector<F> &column) {
-        //TODO
+    void prepareChebSle(std::vector<std::vector<double>> &matrix, std::vector<double> &column, int n) {
+        //TODO BUG HAZARD!!!
+        auto a = getChebyshevCoeffs(n);
+
+        matrix.resize(n + 1, std::vector<double>(n + 1, 0.0));
+        column.resize(n + 1, 0.0);
+
+        //setup column:
+        for (int i = 0; i < column.size() - 1; ++i) {
+            column[i] = 0;
+        }
+        column[column.size() - 1] = 1;
+
+        //setup n-1 equations
+        for (int i = 0; i < n - 1; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                matrix[i][j] = a[j][i];
+            }
+
+            matrix[i][i] = -1;
+        }
+
+        //specifying Cauchy equation
+        for (int i = 0; i < n; ++i) {
+            matrix[n][i] = getChebApproximation(i, 0);
+        }
     }
 
     ///@brief calculates exponent using Chebyshev approximation
     template<typename F>
     F expChebyshev(F x) {
         int n = 20;
+        auto value = (double) x;
 
-        std::vector<std::vector<F>> matrix;
-        std::vector<F> column;
+        std::vector<std::vector<double>> matrix;
+        std::vector<double> column;
 
-        prepareChebSle(matrix, column);
+        prepareChebSle(matrix, column, n);
 
         std::vector<F> coeffs = sleSolve(matrix, column);
 
-        F res = 0.0;
+        double res = 0.0;
 
-        for (int i = 0; i < n; ++i) {
-            res += getChebApproximation(i, x) * coeffs[i];
+        for (int i = 0; i <= n; ++i) {
+            res += getChebApproximation(i, value) * coeffs[i];
         }
 
-        return res;
+        return (F) res;
     }
 
     ///@brief calculates exponent. Analog to std::exp()
