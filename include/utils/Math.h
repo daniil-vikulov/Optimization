@@ -9,7 +9,7 @@ namespace adaai::solution {
     ///@brief genate
 
     std::vector<std::vector<double>> getChebyshevCoeffs(int n) {
-        return {};
+        //TODO
     }
 
     ///@brief fеу
