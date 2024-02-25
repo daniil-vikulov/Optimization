@@ -131,5 +131,9 @@ void tests::testLongDoubleChebyshev() {
 
 
 void tests::testChebyshev() {
-    //TODO
+    double ans = exponent(1.0, Method::Chebyshev);
+
+    logI(exp(1.0), ans);
+
+    //testFloatChebyshev();
 }
