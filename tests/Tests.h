@@ -1,11 +1,9 @@
 #ifndef TESTS_H
 #define TESTS_H
 
-#include "Logger.h"
+#include "utils/Logger.h"
 
 namespace adaai::tests {
-    ///@brief checks whether GMP library has been linked correctly
-    void checkGmpLib();
 
     ///@brief testing of Chebyshev-based exponent calculation for float, double and long double
     void testChebyshev();

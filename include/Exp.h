@@ -12,12 +12,14 @@
 #include "consts/Consts.h"
 #include "consts/GccConsts.h"
 #include "utils/Logger.h"
-
+#include "utils/Math.h"
+#include "utils/SleSolver.h"
 
 namespace adaai::solution {
     enum class Method {
         Pade,
-        Taylor
+        Taylor,
+        Chebyshev
     };
 
     ///@brief calculates exponent using Taylor formula
@@ -63,10 +65,36 @@ namespace adaai::solution {
         return res;
     }
 
+    template<typename F>
+    void prepareChebSle(std::vector<std::vector<F>> &matrix, std::vector<F> &column) {
+        //TODO
+    }
+
+    ///@brief calculates exponent using Chebyshev approximation
+    template<typename F>
+    F expChebyshev(F x) {
+        int n = 20;
+
+        std::vector<std::vector<F>> matrix;
+        std::vector<F> column;
+
+        prepareChebSle(matrix, column);
+
+        std::vector<F> coeffs = sleSolve(matrix, column);
+
+        F res = 0.0;
+
+        for (int i = 0; i < n; ++i) {
+            res += getChebApproximation(i, x) * coeffs[i];
+        }
+
+        return res;
+    }
+
     ///@brief calculates exponent. Analog to std::exp()
     ///@details uses Pade calculationMethod by default
     template<typename F>
-    constexpr F exponent(F x, Method calculationMethod = Method::Pade) {
+    constexpr F exponent(F x, Method calculationMethod = Method::Chebyshev) {
         static_assert(std::is_floating_point<F>::value,
                       "Not a floating point number");
 
@@ -124,6 +152,8 @@ namespace adaai::solution {
             result *= expTaylor(temp, N);
         } else if (calculationMethod == Method::Pade) {
             result *= expPade(temp);
+        } else if (calculationMethod == Method::Chebyshev) {
+            result *= expChebyshev(temp);
         }
 
         if (result <= 0 && x > 0) {

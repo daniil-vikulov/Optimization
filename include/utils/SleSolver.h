@@ -8,7 +8,7 @@
 
 #include "Logger.h"
 
-namespace adaii::solution {
+namespace adaai::solution {
     ///@brief solves system of linear equations. formula: AX = V
     ///@param A matrix of coefficients
     ///@param V vector of known values
