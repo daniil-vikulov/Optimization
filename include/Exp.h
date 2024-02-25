@@ -8,12 +8,12 @@
 #include <iostream>
 #include <limits>
 #include <type_traits>
+#include "gsl/gsl_linalg.h"
 
 #include "consts/Consts.h"
 #include "consts/GccConsts.h"
 #include "utils/Logger.h"
 #include "utils/Math.h"
-#include "utils/SleSolver.h"
 
 namespace adaai::solution {
     enum class Method {
@@ -65,55 +65,64 @@ namespace adaai::solution {
         return res;
     }
 
-    void prepareChebSle(std::vector<std::vector<double>> &matrix, std::vector<double> &column, int N) {
-        //TODO BUG HAZARD!!!
-        auto a = getChebyshevCoeffs(N);
-
-        matrix.resize(N + 1, std::vector<double>(N + 1, 0.0));
-        column.resize(N + 1, 0.0);
-
-        //setup column:
-        for (int i = 0; i < column.size() - 1; ++i) {
-            column[i] = 0;
-        }
-        column[column.size() - 1] = 1;
-
-        //setup N-1 equations
-        for (int k = 0; k < N - 1; ++k) {
-            for (int n = k + 1; n < N; ++n) {
-                matrix[k][n] = a[n][k];
+    ///@brief fills array with Chebyshev-based SLE
+    void prepareSle(double *matrix, double *column, int size) {
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                matrix[i * size + j] = 0;
             }
-
-            matrix[k][k] = -1;
         }
 
-        //specifying Cauchy equation
-        for (int i = 0; i < N; ++i) {
-            matrix[N][i] = getChebApproximation(i, 0);
+        for (int k = 0; k < size; ++k) {
+            if (k == size - 1) {
+                for (int n = 0; n < size; ++n)
+                    matrix[k * size + n] = getZeroApproximation(n);
+            } else {
+                matrix[k * size + k] = -1.0;
+                for (int n = k + 1; n < size; ++n) {
+                    matrix[k * size + n] = getCoefficient(n, k);
+                }
+            }
         }
 
+        column[size - 1] = 1.0;
     }
 
     ///@brief calculates exponent using Chebyshev approximation
     template<typename F>
     F expChebyshev(F x) {
-        int n = 5;
-        auto value = (double) x;
+        int size = 21;
 
-        std::vector<std::vector<double>> matrix;
-        std::vector<double> column;
+        auto matrix = new double[size * size];
+        auto column = new double[size];
 
-        prepareChebSle(matrix, column, n);
+        prepareSle(matrix, column, size);
 
-        std::vector<double> coeffs = sleSolve(matrix, column);
+        gsl_matrix_view A = gsl_matrix_view_array(matrix, size, size);
+        gsl_vector_view b = gsl_vector_view_array(column, size);
 
-        double res = 0.0;
+        gsl_permutation *permutation = gsl_permutation_alloc(size);
+        gsl_vector *answer = gsl_vector_alloc(size);
 
-        for (int i = 0; i <= n; ++i) {
-            res += getChebApproximation(i, value) * coeffs[i];
-        }
+        int dimension;
+        gsl_linalg_LU_decomp(&A.matrix, permutation, &dimension);
+        gsl_linalg_LU_solve(&A.matrix, permutation, &b.vector, answer);
 
-        return (F) res;
+        gsl_cheb_series *chebyshevSeries = gsl_cheb_alloc(size - 1);
+        chebyshevSeries->c = answer->data;
+
+        chebyshevSeries->c[0] *= 2;
+
+        chebyshevSeries->order = size;
+        chebyshevSeries->a = -1;
+        chebyshevSeries->b = 1;
+
+        double value = gsl_cheb_eval(chebyshevSeries, (double) x);
+
+        delete[] matrix;
+        delete[] column;
+
+        return value;
     }
 
     ///@brief calculates exponent. Analog to std::exp()
@@ -187,6 +196,6 @@ namespace adaai::solution {
 
         return result;
     }
-} // namespace adaai::solution
+}
 
 #endif

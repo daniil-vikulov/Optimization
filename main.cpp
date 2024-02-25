@@ -1,7 +1,7 @@
 #include "tests/Tests.h"
 
-int main() {
-    adaai::tests::testChebyshev();
-
-    return 0;
+int main () {
+    adaai::tests::testFloatChebyshev();
+    adaai::tests::testDoubleChebyshev();
+    adaai::tests::testLongDoubleChebyshev();
 }

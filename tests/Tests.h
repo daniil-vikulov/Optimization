@@ -16,7 +16,6 @@ namespace adaai::tests {
 
     ///@brief internal Chebyshev-based exponent testing function in long double mode
     void testLongDoubleChebyshev();
-
 }
 
 #endif

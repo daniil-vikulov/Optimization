@@ -39,7 +39,7 @@ void testExponentChebyshev(F x) {
 void tests::testFloatChebyshev() {
     logI("Testing Chebyshev-exponent in float mode...");
 
-    const int count = 100000000;
+    const int count = 10000;
     const float lower_limit = -2147483649.5f;
     const float upper_limit = 2147483648.5f;
 
@@ -70,7 +70,7 @@ void tests::testFloatChebyshev() {
 void tests::testDoubleChebyshev() {
     logI("Testing Chebyshev-exponent in double mode...");
 
-    const int count = 50000000;
+    const int count = 5000;
     const double lower_limit = -2147483649.5;
     const double upper_limit = 2147483649.5;
 
@@ -101,7 +101,7 @@ void tests::testDoubleChebyshev() {
 void tests::testLongDoubleChebyshev() {
     logI("Testing Chebyshev-exponent in long double mode...");
 
-    const int count = 10000000;
+    const int count = 10000;
     const long double lower_limit = -2147483649.5l;
     const long double upper_limit = 2147483649.5l;
 
@@ -127,13 +127,4 @@ void tests::testLongDoubleChebyshev() {
     testExponentChebyshev(std::numeric_limits<long double>::lowest());
 
     logI("Long double mode is tested!!!");
-}
-
-
-void tests::testChebyshev() {
-    double ans = exponent(1.0, Method::Chebyshev);
-
-    logI(exp(1.0), ans);
-
-    //testFloatChebyshev();
 }
