@@ -15,8 +15,13 @@
 #define M_SQRT2f 1.41421356237309504880f
 #endif
 
-#ifndef M_SQRT2l
-#define M_SQRT2l 1.414213562373095048801688724209698079L
+#ifndef M_PIl
+# define M_PIl          3.141592653589793238462643383279502884L
 #endif
+
+#ifndef M_PIf
+#define M_PIf 3.141592653589793238462f
+#endif
+
 
 #endif
