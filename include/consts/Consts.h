@@ -42,6 +42,16 @@ namespace adaai::solution {
         }
         assert(false);
     }
+    template<typename F> constexpr inline F Pi;
+
+    template<> constexpr inline float Pi<float> = M_PIf;
+
+    template<> constexpr inline float Pi<double> = M_PI;
+
+    template<> constexpr inline float Pi<long double> = M_PIl;
+    
+
+
 
 } // namespace adaai::solution
 
