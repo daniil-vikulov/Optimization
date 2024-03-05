@@ -26,12 +26,39 @@ namespace adaai::solution {
     template<typename F>
     std::vector<F> getA(int n, std::vector<F> &points) {
         //TODO implement formula. std::exp and std::acos can be used.
+        std::vector<F> coefficients(n);
+        for(int i = 0; i < n; i++){
+            F sum_exp_Tk = 0;
+            for(int j = 1;j<n; j++){
+                sum_exp_Tk += std::exp(std::acos(points[j])); // * T_k(points[j]))
+            }
+        }
+
     }
 
-    ///@brief calculates n points for getA function
+    ///@brief calculates a_i by integration by parts 
+    template<typename F>
+    std::vector<F> getA_intergate(int n){
+        std::vector<F> coefficients(n);
+        F factor = 2 / Pi<F>;
+        F exp_pi = std::exp(Pi<F>);
+        coefficients[0] = factor * (exp_pi-1);
+        for (int i = 1; i < n; ++i) {
+            coefficients[i] = factor * (-1 + exp_pi *(i%2)) /(i*i + 1); // formula from wolframalpha
+        }
+
+        return coefficients;
+    }
+
+    ///@brief calculates n points for getA function -compute x tilda
     template<typename F>
     std::vector<F> getPoints(int n) {
+        std::vector<F> x_tilda(n);
+        for(int i = 0;i < n; i++) {
+            x_tilda[i] = std::cos(Pi<F> * (2*i-1) / (2*n +1));
+        }
 
+        return x_tilda;
     }
 
     template<typename F>
