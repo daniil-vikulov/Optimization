@@ -31,10 +31,16 @@ namespace adaai::solution {
         std::vector<F> coefficients(n);
         for (int i = 0; i < n; i++) {
             F sum_exp_Tk = 0;
-            for (int j = 1; j < n; j++) {
-                sum_exp_Tk += std::exp(std::acos(points[j])); // * T_k(points[j]))
+            for (int j = 1; j <= n + 1; j++) {
+                auto T_k = getT(points[j], n);
+                sum_exp_Tk += std::exp(std::acos(points[j])) * T_k[j];
             }
+            sum_exp_Tk *= 2;
+            sum_exp_Tk /= n + 1;
+            coefficients[i] = sum_exp_Tk;
         }
+        
+        return coefficients;
 
     }
 
