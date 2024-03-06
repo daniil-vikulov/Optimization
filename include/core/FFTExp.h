@@ -62,8 +62,8 @@ namespace adaai::solution {
     template<typename F>
     std::vector<F> getPoints(int n) {
         std::vector<F> x_tilda(n);
-        for (int i = 0; i < n; i++) {
-            x_tilda[i] = std::cos(Pi<F> * (2 * i - 1) / (2 * n + 1));
+        for (int i = 1; i <= n + 1; i++) {
+            x_tilda[i - 1] = std::cos(Pi<F> * (2 * i - 1) / (2 * (n + 1)));
         }
 
         return x_tilda;
