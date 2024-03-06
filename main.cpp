@@ -1,5 +1,6 @@
 #include "tests/Tests.h"
 
 int main () {
-    adaai::tests::testFFT();
+    adaai::tests::testFftCalculation();
+    //adaai::tests::testFFT();
 }

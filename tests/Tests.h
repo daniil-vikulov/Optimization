@@ -16,6 +16,8 @@ namespace adaai::tests {
 
     ///@brief internal FFT exponent testing function in long double mode
     void testLongDoubleFFT();
+
+    void testFftCalculation();
 }
 
 #endif

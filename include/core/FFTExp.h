@@ -2,6 +2,8 @@
 #define FFT_EXP_H
 
 #include <vector>
+#include <gsl/gsl_fft_real.h>
+#include <gsl/gsl_fft_complex.h>
 
 #include "consts/Consts.h"
 #include "consts/GccConsts.h"
@@ -27,9 +29,9 @@ namespace adaai::solution {
     std::vector<F> getA(int n, std::vector<F> &points) {
         //TODO implement formula. std::exp and std::acos can be used.
         std::vector<F> coefficients(n);
-        for(int i = 0; i < n; i++){
+        for (int i = 0; i < n; i++) {
             F sum_exp_Tk = 0;
-            for(int j = 1;j<n; j++){
+            for (int j = 1; j < n; j++) {
                 sum_exp_Tk += std::exp(std::acos(points[j])); // * T_k(points[j]))
             }
         }
@@ -38,13 +40,13 @@ namespace adaai::solution {
 
     ///@brief calculates a_i by integration by parts 
     template<typename F>
-    std::vector<F> getA_intergate(int n){
+    std::vector<F> getA_intergate(int n) {
         std::vector<F> coefficients(n);
         F factor = 2 / Pi<F>;
         F exp_pi = std::exp(Pi<F>);
-        coefficients[0] = factor * (exp_pi-1);
+        coefficients[0] = factor * (exp_pi - 1);
         for (int i = 1; i < n; ++i) {
-            coefficients[i] = factor * (-1 + exp_pi *(i%2)) /(i*i + 1); // formula from wolframalpha
+            coefficients[i] = factor * (-1 + exp_pi * (i % 2)) / (i * i + 1); // formula from wolframalpha
         }
 
         return coefficients;
@@ -54,20 +56,63 @@ namespace adaai::solution {
     template<typename F>
     std::vector<F> getPoints(int n) {
         std::vector<F> x_tilda(n);
-        for(int i = 0;i < n; i++) {
-            x_tilda[i] = std::cos(Pi<F> * (2*i-1) / (2*n +1));
+        for (int i = 0; i < n; i++) {
+            x_tilda[i] = std::cos(Pi<F> * (2 * i - 1) / (2 * n + 1));
         }
 
         return x_tilda;
     }
 
     template<typename F>
-    F expFFT(F x) {
-        int precisionValue = 123;//must should be 2^i +- 1
+    ///@brief calculates sum(a[k] * cos(k * x_j)) for all x_j = 2 * pi * j / n, where j = [0, ..., n)
+    ///@warning coefficients.size() must be a pow of 2
+    ///@return array of sum(x_j): sum(x_j) = result[j].
+    std::vector<F> calculateSum(const std::vector<F> &coefficients) {
+        size_t dataSize = 2 * coefficients.size();
+        auto data = new double[dataSize];
 
-        std::vector<F> points = getPoints<F>(precisionValue);
-        //TODO fill array of a_k (formula we can use std::exp and std::acos)
-        //TODO use FFT to calculate a_0/2 + sum (a_n * cos(kx))
+        for (int i = 0; i < coefficients.size(); ++i) {
+            data[2 * i] = coefficients[i];
+            data[2 * i + 1] = 0.0;
+        }
+
+        logI("Data array:");
+        for (int i = 0; i < dataSize; ++i) {
+            std::cout << data[i] << ' ';
+        }
+        std::cout << std::endl;
+
+        gsl_fft_complex_radix2_forward(data, 1, coefficients.size());
+
+        std::vector<F> result(coefficients.size());
+        for (int i = 0; i < result.size(); i += 2) {
+            result[i / 2] = data[i];
+        }
+
+        logI("Data array:");
+        for (int i = 0; i < dataSize; ++i) {
+            std::cout << data[i] << ' ';
+        }
+        std::cout << std::endl;
+
+        delete[] data;
+
+        return result;
+    }
+
+    template<typename F>
+    F expFFT(F x) {
+        int precisionValue = 124;//must be a power of two
+
+        auto coefficients = getPoints<F>(precisionValue);
+
+        auto result = calculateSum(getA<F>(precisionValue), coefficients);
+
+        for (int i = 0; i < result.size(); ++i) {
+            result[i] += coefficients[0] / 2;
+        }
+
+        //TODO return value in a nearest point;
     }
 }
 
