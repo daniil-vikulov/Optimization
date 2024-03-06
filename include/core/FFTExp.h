@@ -72,7 +72,7 @@ namespace adaai::solution {
     ///@brief calculates sum(a[k] * cos(k * x_j)) for all x_j = 2 * pi * j / n, where j = [0, ..., n)
     ///@warning coefficients.size() must be a pow of 2
     ///@return array of sum(x_j): sum(x_j) = result[j].
-    std::vector<F> calculateSum(const std::vector<F> &coefficients,  int values) {
+    std::vector<F> calculateSum(const std::vector<F> &coefficients,  int value) {
         size_t dataSize = 2 * coefficients.size();
         auto data = new double[dataSize];
 
@@ -109,19 +109,19 @@ namespace adaai::solution {
     F expFFT(F x) {
         int precisionValue = 128;//must be a power of two
 
-        auto coefficients = getA_integrate<F>(precisionValue);
+        auto coefficients = getA_intergate<F>(precisionValue);
 
         auto result = calculateSum(getA<F>(precisionValue), coefficients, precisionValue); // a
         // calculate exp in special x_i(said at task )
-        for(int i = 0; i < N; i++) {
+        for(int i = 0; i < precisionValue; i++) {
             if( i%2 !=0) {
                 std::cout<<"Problem in gsl_fft_complex_radix2_forward, sorry"<<'\n';
             } else {
                 F x_i = (i*Pi<F>) /precisionValue ;
-                std::cout<<"Get:"<<(result)[2*(i)]<<"Expected:"<<std::exp(xi)<<'\n';
+                std::cout<<"Get:"<<(result)[2*(i)]<<"Expected:"<<std::exp(x_i)<<'\n';
             }
         }
-
+        return 0;
         //TODO return value in a nearest point;
     }
 }
