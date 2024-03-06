@@ -41,7 +41,6 @@ namespace adaai::solution {
         }
         
         return coefficients;
-
     }
 
     ///@brief calculates a_i by integration by parts 
@@ -73,7 +72,7 @@ namespace adaai::solution {
     ///@brief calculates sum(a[k] * cos(k * x_j)) for all x_j = 2 * pi * j / n, where j = [0, ..., n)
     ///@warning coefficients.size() must be a pow of 2
     ///@return array of sum(x_j): sum(x_j) = result[j].
-    std::vector<F> calculateSum(const std::vector<F> &coefficients) {
+    std::vector<F> calculateSum(const std::vector<F> &coefficients,  int values) {
         size_t dataSize = 2 * coefficients.size();
         auto data = new double[dataSize];
 
@@ -88,7 +87,7 @@ namespace adaai::solution {
         }
         std::cout << std::endl;
 
-        gsl_fft_complex_radix2_forward(data, 1, coefficients.size());
+        gsl_fft_complex_radix2_forward(coefficients, 1, value);
 
         std::vector<F> result(coefficients.size());
         for (int i = 0; i < result.size(); i += 2) {
@@ -103,19 +102,24 @@ namespace adaai::solution {
 
         delete[] data;
 
-        return result;
+        return coefficients;
     }
 
     template<typename F>
     F expFFT(F x) {
-        int precisionValue = 124;//must be a power of two
+        int precisionValue = 128;//must be a power of two
 
-        auto coefficients = getPoints<F>(precisionValue);
+        auto coefficients = getA_integrate<F>(precisionValue);
 
-        auto result = calculateSum(getA<F>(precisionValue), coefficients);
-
-        for (int i = 0; i < result.size(); ++i) {
-            result[i] += coefficients[0] / 2;
+        auto result = calculateSum(getA<F>(precisionValue), coefficients, precisionValue); // a
+        // calculate exp in special x_i(said at task )
+        for(int i = 0; i < N; i++) {
+            if( i%2 !=0) {
+                std::cout<<"Problem in gsl_fft_complex_radix2_forward, sorry"<<'\n';
+            } else {
+                F x_i = (i*Pi<F>) /precisionValue ;
+                std::cout<<"Get:"<<(result)[2*(i)]<<"Expected:"<<std::exp(xi)<<'\n';
+            }
         }
 
         //TODO return value in a nearest point;
