@@ -7,7 +7,7 @@ enum class WhichD:int {
         xx, // d^{2} F/dx^{2}
         yy, // d^{2} F/dy^{2}
         xy // d^{2} F/dydx
-    }
+    };
 
 
 // Callable AAD22(AAD22 const&, AAD22 const& )
@@ -42,28 +42,41 @@ enum class WhichD:int {
         // implement    unary '+', '-';
         //              binary '+', '+=', '-', '-=', '*', '*=', '/', '/='
         //              elementaty functions: sin, cos, exp
-        AAD22 operator +(AAD22 const& right);
+        AAD22 operator +(AAD22 const& right) const;
 
-        AAD22 operator +(double const &c) const;
+        AAD22 operator +(double const& right) const;
 
-        AAD22 operator *(AAD22 const &r) const;
+        AAD22 operator -(AAD22 const& right) const;
 
-        AAD22 operator *(double const&n) const;
+        AAD22 operator -(double const& right) const;
+
+        AAD22 operator *(AAD22 const& right) const;
+
+        AAD22 operator *(double const& right) const;
+
+        AAD22 operator /(AAD22 const& right) const;
+
+        AAD22 operator /(double const& right) const;
 
         AAD22 derivative(WhichD type);
  
     };
 
-    AAD22 operator*(double const&n, AAD22 const&val);
+    AAD22 operator *(double const& right, AAD22 const& value);
 
-    AAD22 operator+(double const&n, AAD22 const&val);
+    AAD22 operator /(double const& right, AAD22 const& value); 
+    AAD22 operator /(AAD22 const& value, double const& right);
+
+    AAD22 operator +(double const& right, AAD22 const& value);
+
+    AAD22 operator -(double const& right, AAD22 const& value);
 
 
-    AAD22 sin(AAD22 const &val);
+    AAD22 sin(AAD22 const& value);
 
-    AAD22 cos(AAD22 const &val);
+    AAD22 cos(AAD22 const& value);
 
-    AAD22 exp(AAD22 const &val);
+    AAD22 exp(AAD22 const& value);
     
 
 #endif
