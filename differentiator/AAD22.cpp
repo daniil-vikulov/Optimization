@@ -25,7 +25,16 @@ AAD22 operator+(double const& right, AAD22 const& value) {
 AAD22 operator+(AAD22 const& value, double const& right) {
     return value + AAD22(right);
 }
-//TODO: add +=
+
+AAD22 AAD22::operator+=(AAD22 const& right) {
+    *this = *this + right;
+    return *this;
+}
+
+AAD22 AAD22::operator+=(double const& right) {
+    *this = *this + AAD22(right);
+    return *this;
+}
 
 
 //all - operators
@@ -45,6 +54,15 @@ AAD22 operator-(AAD22 const& value, double const& right) {
     return value - AAD22(right);
 }
 // TODO: add -=
+AAD22 AAD22::operator-=(AAD22 const& right) {
+    *this = *this - right;
+    return *this;
+}
+
+AAD22 AAD22::operator-=(double const& right) {
+    *this = *this - AAD22(right);
+    return *this;
+}
 
 
 //all * operators
@@ -71,6 +89,15 @@ AAD22 operator*(AAD22 const& value, double const& right) {
     return value * AAD22(right);
 }
 //TODO: add *=
+AAD22 AAD22::operator*=(AAD22 const& right) {
+    *this = *this * right;
+    return *this;
+}
+
+AAD22 AAD22::operator*=(double const& right) {
+    *this = *this * AAD22(right);
+    return *this;
+}
 
 
 //all / operators
@@ -112,6 +139,16 @@ AAD22 operator/(AAD22 const &value, double const& right) {
     return value / AAD22(right);
 }
 //TODO: add /= 
+
+AAD22 AAD22::operator/=(AAD22 const& right) {
+    *this = *this / right;
+    return *this;
+}
+
+AAD22 AAD22::operator/=(double const& right) {
+    *this = *this / AAD22(right);
+    return *this;
+}
 
 
 //sin differentiator 

@@ -19,8 +19,9 @@ double get_differ(double x, double y) {
 
 
 int main() {
-    double x = 2.0;
-    double y = 3.0;
+
+    double x = 20.2926;
+    double y = 0.91747;
     std::cout<<"dF/dx \n";
     
     std::cout << "Stencil3: " << Differentiator<WhichD::x, DiffMethod::Stencil3>(&func_double, x, y) << '\n';

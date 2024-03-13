@@ -46,17 +46,33 @@ enum class WhichD:int {
 
         AAD22 operator+(double const& right) const;
 
+        AAD22 operator+=(AAD22 const& right);
+
+        AAD22 operator+=(double const& right);
+
         AAD22 operator-(AAD22 const& right) const;
 
         AAD22 operator-(double const& right) const;
+
+        AAD22 operator-=(AAD22 const& right);
+
+        AAD22 operator-=(double const& right);
 
         AAD22 operator*(AAD22 const& right) const;
 
         AAD22 operator*(double const& right) const;
 
+        AAD22 operator*=(AAD22 const &r);
+
+        AAD22 operator*=(double const &c);
+
         AAD22 operator/(AAD22 const& right) const;
 
         AAD22 operator/(double const& right) const;
+
+        AAD22 operator/=(AAD22 const& right);
+
+        AAD22 operator/=(double const& right);
 
         AAD22 derivative_sin() const;
 
