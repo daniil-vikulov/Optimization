@@ -1,0 +1,3 @@
+/Users/anastasiakucina/Optimization/differentiator/CMakeFiles/main.dir
+/Users/anastasiakucina/Optimization/differentiator/CMakeFiles/edit_cache.dir
+/Users/anastasiakucina/Optimization/differentiator/CMakeFiles/rebuild_cache.dir
