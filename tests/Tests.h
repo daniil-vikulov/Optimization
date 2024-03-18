@@ -2,7 +2,6 @@
 #define TESTS_H
 
 #include "utils/Logger.h"
-#include "include/core/FFTExp.h"
 
 namespace adaai::tests {
     //TODO
