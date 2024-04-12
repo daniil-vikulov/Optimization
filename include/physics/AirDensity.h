@@ -26,9 +26,7 @@ namespace adaai::solution {
     public:
         ///@brief calculates air density at a specific height
         ///@param height - in meters. Must be less than 47'000
-        double operator()(double height);
-
-        static void calcParams();
+        static double get(double height);
 
         static double getPressure(double height);
     };

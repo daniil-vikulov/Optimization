@@ -21,3 +21,10 @@ void tests::printPressure() {
         logI("Height:", i, "    Pressure:", AirDensity::getPressure(i));
     }
 }
+
+
+void tests::printDensity() {
+    for (int i = 0; i < 47'000; i+=1000) {
+        logI("Height:", i, "    Pressure:", AirDensity::get(i));
+    }
+}

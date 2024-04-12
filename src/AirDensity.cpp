@@ -5,12 +5,30 @@
 
 using namespace adaai::solution;
 
-double AirDensity::operator()(double height) {
-    return 0;
-}
+double AirDensity::get(double height) {
+    double t_l;
+    double h_l; // layer lower bound
+    double r_l; //temperature coefficient
 
-void AirDensity::calcParams() {
+    if (height <= HEIGHT_1_UPPER_BOUND) {
+        t_l = T0;
+        r_l = R_0;
+        h_l = 0;
+    } else if (height > HEIGHT_1_UPPER_BOUND && height <= HEIGHT_2_UPPER_BOUND) {
+        t_l = T1;
+        r_l = R_1;
+        h_l = HEIGHT_1_UPPER_BOUND;
+    } else if (height > HEIGHT_2_UPPER_BOUND && height <= HEIGHT_3_UPPER_BOUND) {
+        t_l = T2;
+        r_l = R_2;
+        h_l = HEIGHT_2_UPPER_BOUND;
+    } else {
+        t_l = T3;
+        r_l = R_3;
+        h_l = HEIGHT_3_UPPER_BOUND;
+    }
 
+    return getPressure(height) / (R_AIR * (t_l - r_l * (height - h_l)));
 }
 
 double AirDensity::getPressure(double height) {

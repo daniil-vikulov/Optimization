@@ -6,4 +6,6 @@ namespace adaai::tests {
     void printDc();
 
     void printPressure();
+
+    void printDensity();
 }
