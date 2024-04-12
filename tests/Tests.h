@@ -1,10 +1,7 @@
-#ifndef TESTS_H
-#define TESTS_H
+#pragma once
 
 #include "utils/Logger.h"
 
 namespace adaai::tests {
-    //TODO
+    void printDc();
 }
-
-#endif

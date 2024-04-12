@@ -1,5 +1,4 @@
-#ifndef LOGGER_H
-#define LOGGER_H
+#pragma once
 
 #include <iostream>
 
@@ -46,5 +45,3 @@ namespace adaai::solution {
 #define logF(...) adaai::solution::Logger::fatal(__FILE__, __VA_ARGS__)
 #define logE(...) adaai::solution::Logger::error(__FILE__, __VA_ARGS__)
 #define logW(...) adaai::solution::Logger::warning(__FILE__, __VA_ARGS__)
-
-#endif
