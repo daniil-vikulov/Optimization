@@ -9,7 +9,7 @@ using namespace solution;
 void adaai::tests::printDc() {
     double height = 0.4;
 
-    while (height <= 2.2) {
+    while (height <= 4) {
         logI(DragCoefficients::get(height));
 
         height += 0.2;
@@ -24,7 +24,8 @@ void tests::printPressure() {
 
 
 void tests::printDensity() {
-    for (int i = 0; i < 47'000; i+=1000) {
+    DragCoefficients::get(1);
+    /*    for (int i = 0; i < 47'000; i+=1000) {
         logI("Height:", i, "    Pressure:", AirDensity::get(i));
-    }
+    }*/
 }
