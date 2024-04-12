@@ -1,5 +1,6 @@
 #include "tests/Tests.h"
 
 int main () {
-    adaai::tests::printDc();
+    adaai::tests::printPressure();
+    //adaai::tests::printDc();
 }
