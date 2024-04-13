@@ -64,12 +64,13 @@ void tests::solution() {
         initialParams.airSpeed = Atmosphere::getAirSpeed;
         initialParams.handler = stopper;
 
-        Simulator simulator(initialParams, 0.1);
-        auto res = simulator.simulate2(10'000);
+        Simulator simulator(initialParams, 1.0);
+        auto res = simulator.simulate(10'000);
         if (distance < res.x) {
             distance = res.x;
             resAngle = angle;
         }
+        logI("Distance:", res.x, res.y);
     }
     logI("Optimal angle:", 180.0 / M_PI * resAngle);
     logI("Max distance:", distance);
@@ -88,9 +89,12 @@ void tests::solution() {
     initialParams.airSpeed = Atmosphere::getAirSpeed;
     initialParams.handler = observer;
 
-    //logI(initialParams.vX,initialParams.vY);
-    Simulator simulator(initialParams, 0.1);
-    simulator.simulate(10'000);
+    Simulator simulator1(initialParams, 0.1);
+    auto res1 = simulator1.simulate(10'000);
+    logI(res1.x, res1.y);
+    Simulator simulator2(initialParams, 0.1);
+    auto res2 = simulator2.simulate2(10'000);
+    logI(res2.x, res2.y);
 
     //log();
 }
@@ -121,12 +125,10 @@ void tests::printDensity() {
 }
 
 int func(double t, const double y[], double f[], void *params) {
-    (void) (t); // avoid unused parameter warning
-    double g = *(double *) params;
-    f[0] = y[1];    // dx/dt = vx
-    f[1] = 0;       // dvx/dt = 0
-    f[2] = y[3];    // dy/dt = vy
-    f[3] = -g;      // dvy/dt = -g
+    f[0] = -2 * y[0] + 4 * y[1] + 3*y[2];
+    f[1] = -y[0] + 3 * y[1] - 5*y[2];
+    f[2] = y[0] + y[1] - y[2];
+
     return GSL_SUCCESS;
 }
 
@@ -135,43 +137,39 @@ void tests::gslPlayZone() {
     double g = 10.0;
 
     // Define the system
-    gsl_odeiv2_system sys = {func, nullptr, 4, &g};
+    gsl_odeiv2_system sys = {func, nullptr, 3, nullptr};
 
     // Define initial conditions
-    double y[4] = {0, 50, 0, 50}; // Initial position (x=0, y=0) and velocity (vx=50, vy=50)
+    double y[3] = {3, -1, 2};
 
-    double t = 0.0, t1 = 11.0;
-    double h = 1e-6; // Initial step size
+    double t = 0.0, t1 = 1.0;
+    double h = 1e-6;
 
-    // Create a _driver for managing the integration
     gsl_odeiv2_driver *d = gsl_odeiv2_driver_alloc_y_new(&sys, gsl_odeiv2_step_rkf45, h, 1e-6, 0.0);
 
-    // Integrate over the time range
-    for (double ti = 0.0; ti < t1; ti += 1.0) {
-        int status = gsl_odeiv2_driver_apply(d, &t, ti, y);
+    int status = gsl_odeiv2_driver_apply(d, &t, t1, y);
 
-        if (status != GSL_SUCCESS) {
-            std::cout << "Error, return value=" << status << std::endl;
-            break;
-        }
-
-        std::cout << "At time t=" << t << " x=" << y[0] << " vx=" << y[1] << " y=" << y[2] << " vy=" << y[3]
-                  << std::endl;
+    if (status != GSL_SUCCESS) {
+        std::cout << "Error, return value=" << status << std::endl;
     }
+
+    logI(y[0], y[1], y[2]);
 
     gsl_odeiv2_driver_free(d);
 }
 
 int equation(double t, const double *y, double *func, void *params) {
-    func[0] = 1 + y[0] * y[0];
+    func[0] = -2 * y[0] + 4 * y[1] + 3*y[2];
+    func[1] = -y[0] + 3 * y[1] - 5*y[2];
+    func[2] = y[0] + y[1] - y[2];
 
     return 0;
 }
 
 void tests::testRKF45() {
-    double y[2] = {3, 0};
-    RKF45Integrator integrator(equation, 2, nullptr);
+    double y[3] = {3, -1, 2};
+    RKF45Integrator integrator(equation, 3, nullptr);
     double start = 0;
     integrator.integrate(y, &start, 1);
-    logI(y[0], y[1]);
+    logI(y[0], y[1], y[2]);
 }

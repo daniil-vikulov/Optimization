@@ -1,7 +1,8 @@
 #include "tests/Tests.h"
 
 int main () {
-    adaai::tests::testRKF45();
-    //adaai::tests::solution();
+    //adaai::tests::gslPlayZone();
+    //adaai::tests::testRKF45();
+    adaai::tests::solution();
     return 0;
 }

@@ -5,7 +5,7 @@ namespace adaai::solution {
 
     class RKF45Integrator {
     private:
-        static constexpr double Tolerance = 1e-4;
+        static constexpr double Tolerance = 1e-3;
 
         static constexpr double A[7] = {0.0, 0.0, 1.0 / 2.0, 1.0 / 2.0, 1.0, 2.0 / 3.0, 1.0 / 5.0};
         static constexpr double B[7][7] = {{0.0, 0.0,          0.0,         0.0,           0.0,          0.0,   0.0},

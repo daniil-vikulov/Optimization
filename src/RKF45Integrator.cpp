@@ -125,6 +125,7 @@ bool RKF45Integrator::step(double t, double &h, double *y) {
         delta = std::max(std::abs(delta_vector[i]), delta);
     }
 
+
     h = 0.9 * h * std::pow(Tolerance / delta, 1.0 / 5.0);
     if (delta < Tolerance) {
         return true;
