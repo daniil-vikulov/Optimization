@@ -70,7 +70,6 @@ void tests::solution() {
             distance = res.x;
             resAngle = angle;
         }
-        logI("Distance:", res.x, res.y);
     }
     logI("Optimal angle:", 180.0 / M_PI * resAngle);
     logI("Max distance:", distance);
@@ -91,10 +90,10 @@ void tests::solution() {
 
     Simulator simulator1(initialParams, 0.1);
     auto res1 = simulator1.simulate(10'000);
-    logI(res1.x, res1.y);
+    logI(res1.x, res1.y); //Will display 127757 -7.82858
     Simulator simulator2(initialParams, 0.1);
     auto res2 = simulator2.simulate2(10'000);
-    logI(res2.x, res2.y);
+    logI(res2.x, res2.y); //Will display: 127771 -31.6959
 
     //log();
 }
