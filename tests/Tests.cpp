@@ -88,8 +88,6 @@ bool stopper(double x, double y, double vX, double vY, double timePast) {
     return y >= 0;
 }
 
-int counter = 0;
-
 struct TimeStamp {
     double time, x, y, vX, vY;
 };
@@ -100,7 +98,15 @@ std::vector<TimeStamp> trajectoryTelemetry;
 bool observer(double x, double y, double vX, double vY, double timePast) {
     trajectoryTelemetry.push_back({timePast, x, y, vX, vY});
 
-    return y >= 0;
+    return y > 0;
+}
+
+void log() {
+    for (auto point: trajectoryTelemetry) {
+        if (abs(round(point.time / 5) - point.time / 5) < 0.01) {
+            std::cout << point.vY << std::endl;
+        }
+    }
 }
 
 void tests::solution() {
@@ -136,8 +142,8 @@ void tests::solution() {
     Simulator::Params initialParams = {};
     initialParams.x = 0;
     initialParams.y = 0;
-    initialParams.vX = 1640 * cos(resAngle);
-    initialParams.vY = 1640 * sin(resAngle);
+    initialParams.vX = 1600 * cos(resAngle);
+    initialParams.vY = 1600 * sin(resAngle);
     initialParams.mass = 120;
     initialParams.csa = M_PI * 0.21 * 0.21 / 4;
     initialParams.airDensity = Atmosphere::getDensity;
@@ -146,8 +152,9 @@ void tests::solution() {
     initialParams.airSpeed = Atmosphere::getAirSpeed;
     initialParams.handler = observer;
 
+    //logI(initialParams.vX,initialParams.vY);
     Simulator simulator(initialParams, 0.1);
     simulator.simulate(10'000);
 
-    //TODO save logs
+    log();
 }
