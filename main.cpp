@@ -1,6 +1,6 @@
 #include "tests/Tests.h"
 
 int main () {
-    //adaai::tests::printDensity();
-    adaai::tests::printDc();
+    adaai::tests::solution();
+    return 0;
 }

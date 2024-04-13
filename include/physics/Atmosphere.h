@@ -1,7 +1,7 @@
 #pragma once
 
 namespace adaai::solution {
-    class AirDensity {
+    class Atmosphere {
     private:
         constexpr static const double HEIGHT_1_UPPER_BOUND = 11'000.0;
         constexpr static const double HEIGHT_2_UPPER_BOUND = 20'000.0;
@@ -23,11 +23,17 @@ namespace adaai::solution {
         constexpr static double P2 = 5475.03644646;
         constexpr static double P3 = 868.056901172;
 
+        constexpr static int AirSpeedSize = 7;
+        constexpr static double Heights[AirSpeedSize] = {0, 1'000, 5'000, 10'000, 20'000, 50'000, 80'000};
+        constexpr static double AirSpeed[AirSpeedSize] = {340.29, 336.43, 320.54, 299.53, 295.07, 329.8, 282.54};
+
     public:
         ///@brief calculates air density at a specific height
         ///@param height - in meters. Must be less than 47'000
-        static double get(double height);
+        static double getDensity(double height);
 
         static double getPressure(double height);
+
+        static double getAirSpeed(double height);
     };
 }

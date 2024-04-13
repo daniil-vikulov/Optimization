@@ -1,13 +1,12 @@
 #include "physics/DragCoefficients.h"
 
+#include <cmath>
+
 #include "utils/Logger.h"
 
 using namespace adaai::solution;
 
 double DragCoefficients::get(double speed) {
-    if (speed > Speed[Size - 1]) {
-        logF("Over speeding");
-    }
     if (speed < Speed[0]) {
         logF("Under speeding");
     }
@@ -17,6 +16,15 @@ double DragCoefficients::get(double speed) {
             return interpolate(i, speed);
         }
     }
+
+    double a = 1;
+    double b = 2.2;
+    double c = 0.37;
+    double d = 0.22;
+    double y = pow(c / d, 1 / (a - b));
+    double x = c / pow(y, a);
+
+    return x* pow(y, speed);
 }
 
 

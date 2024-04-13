@@ -1,11 +1,13 @@
-#include "physics/AirDensity.h"
+#include "physics/Atmosphere.h"
+
+#include <cmath>
 
 #include "physics/Consts.h"
 #include "utils/Logger.h"
 
 using namespace adaai::solution;
 
-double AirDensity::get(double height) {
+double Atmosphere::getDensity(double height) {
     double t_l;
     double h_l; // layer lower bound
     double r_l; //temperature coefficient
@@ -31,7 +33,7 @@ double AirDensity::get(double height) {
     return getPressure(height) / (R_AIR * (t_l - r_l * (height - h_l)));
 }
 
-double AirDensity::getPressure(double height) {
+double Atmosphere::getPressure(double height) {
     double p_0;
     double inLogFunction;
     double inExpValue;
@@ -67,4 +69,22 @@ double AirDensity::getPressure(double height) {
     inExpValue = G / R_AIR / r_l * log(inLogFunction);
 
     return p_0 * exp(inExpValue);
+}
+
+double Atmosphere::getAirSpeed(double height) {
+    for (int i = 0; i < AirSpeedSize - 1; ++i) {
+        if (height >= Heights[i] && height < Heights[i + 1]) {
+            double x1 = Heights[i];
+            double x2 = Heights[i + 1];
+            double y1 = AirSpeed[i];
+            double y2 = AirSpeed[i + 1];
+
+            double k = (y2 - y1) / (x2 - x1);
+            double b = (x2 * y1 - x1 * y2) / (x2 - x1);
+
+            return k * height + b;
+        }
+    }
+
+    return AirSpeed[AirSpeedSize - 1];
 }
