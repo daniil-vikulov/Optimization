@@ -13,7 +13,9 @@ file(GLOB_RECURSE SRC_TESTS tests/*.cpp)
 
 add_executable(${PROJECT_NAME} main.cpp ${SRC} ${SRC_TESTS}
         include/physics/Simulator.h
-        src/Simulator.cpp)
+        src/Simulator.cpp
+        include/maths/RKF45Integrator.h
+        src/RKF45Integrator.cpp)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${GSL_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${GSL_LIBRARIES})

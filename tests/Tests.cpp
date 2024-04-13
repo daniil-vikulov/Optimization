@@ -1,7 +1,6 @@
 #include "Tests.h"
 
 #include <gsl/gsl_errno.h>
-#include <gsl/gsl_matrix.h>
 #include <gsl/gsl_odeiv2.h>
 #include <vector>
 #include <cmath>
@@ -10,9 +9,93 @@
 #include "physics/Simulator.h"
 #include "physics/DragCoefficients.h"
 #include "physics/Atmosphere.h"
+#include "utils/Logger.h"
+#include "maths/RKF45Integrator.h"
 
 using namespace adaai;
 using namespace solution;
+
+double gravity(double height) {
+    return G / (EARTH_RADIUS + height) / (EARTH_RADIUS + height) * EARTH_RADIUS * EARTH_RADIUS;
+}
+
+///@brief function, which controls the simulation
+bool stopper(double x, double y, double vX, double vY, double timePast) {
+    return y >= 0;
+}
+
+struct TimeStamp {
+    double time, x, y, vX, vY;
+};
+
+std::vector<TimeStamp> trajectoryTelemetry;
+
+///@brief function, which controls the simulation and saves missile's telemetry
+bool observer(double x, double y, double vX, double vY, double timePast) {
+    trajectoryTelemetry.push_back({timePast, x, y, vX, vY});
+
+    return y > 0;
+}
+
+void log() {
+    for (auto point: trajectoryTelemetry) {
+        if (abs(round(point.time / 5) - point.time / 5) < 0.01) {
+            logI(point.x, point.y, point.vX, point.vY);
+        }
+    }
+}
+
+void tests::solution() {
+    double resAngle = 0;
+    double distance = 0;
+
+    ///Calculates optimal angle
+    for (double angle = 0.5; angle < 1.2; angle += 0.05) {
+        Simulator::Params initialParams = {};
+        initialParams.x = 0;
+        initialParams.y = 0;
+        initialParams.vX = 1600 * cos(angle);
+        initialParams.vY = 1600 * sin(angle);
+        initialParams.mass = 120;
+        initialParams.csa = M_PI * 0.21 * 0.21 / 4;
+        initialParams.airDensity = Atmosphere::getDensity;
+        initialParams.gravity = gravity;
+        initialParams.dragCoefficient = DragCoefficients::get;
+        initialParams.airSpeed = Atmosphere::getAirSpeed;
+        initialParams.handler = stopper;
+
+        Simulator simulator(initialParams, 0.1);
+        auto res = simulator.simulate2(10'000);
+        if (distance < res.x) {
+            distance = res.x;
+            resAngle = angle;
+        }
+    }
+    logI("Optimal angle:", 180.0 / M_PI * resAngle);
+    logI("Max distance:", distance);
+
+    ///Simulating best trajectory
+    Simulator::Params initialParams = {};
+    initialParams.x = 0;
+    initialParams.y = 0;
+    initialParams.vX = 1600 * cos(resAngle);
+    initialParams.vY = 1600 * sin(resAngle);
+    initialParams.mass = 120;
+    initialParams.csa = M_PI * 0.21 * 0.21 / 4;
+    initialParams.airDensity = Atmosphere::getDensity;
+    initialParams.gravity = gravity;
+    initialParams.dragCoefficient = DragCoefficients::get;
+    initialParams.airSpeed = Atmosphere::getAirSpeed;
+    initialParams.handler = observer;
+
+    //logI(initialParams.vX,initialParams.vY);
+    Simulator simulator(initialParams, 0.1);
+    simulator.simulate(10'000);
+
+    //log();
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
 
 void adaai::tests::printDc() {
     double height = 0.4;
@@ -79,82 +162,16 @@ void tests::gslPlayZone() {
     gsl_odeiv2_driver_free(d);
 }
 
-double gravity(double height) {
-    return G;
+int equation(double t, const double *y, double *func, void *params) {
+    func[0] = 1 + y[0] * y[0];
+
+    return 0;
 }
 
-///@brief function, which controls the simulation
-bool stopper(double x, double y, double vX, double vY, double timePast) {
-    return y >= 0;
-}
-
-struct TimeStamp {
-    double time, x, y, vX, vY;
-};
-
-std::vector<TimeStamp> trajectoryTelemetry;
-
-///@brief function, which controls the simulation and saves missile's telemetry
-bool observer(double x, double y, double vX, double vY, double timePast) {
-    trajectoryTelemetry.push_back({timePast, x, y, vX, vY});
-
-    return y > 0;
-}
-
-void log() {
-    for (auto point: trajectoryTelemetry) {
-        if (abs(round(point.time / 5) - point.time / 5) < 0.01) {
-            std::cout << point.vY << std::endl;
-        }
-    }
-}
-
-void tests::solution() {
-    double resAngle = 0;
-    double distance = 0;
-
-    ///Calculates optimal angle
-    for (double angle = 0.5; angle < 1.2; angle += 0.05) {
-        Simulator::Params initialParams = {};
-        initialParams.x = 0;
-        initialParams.y = 0;
-        initialParams.vX = 1600 * cos(angle);
-        initialParams.vY = 1600 * sin(angle);
-        initialParams.mass = 120;
-        initialParams.csa = M_PI * 0.21 * 0.21 / 4;
-        initialParams.airDensity = Atmosphere::getDensity;
-        initialParams.gravity = gravity;
-        initialParams.dragCoefficient = DragCoefficients::get;
-        initialParams.airSpeed = Atmosphere::getAirSpeed;
-        initialParams.handler = stopper;
-
-        Simulator simulator(initialParams, 0.1);
-        auto res = simulator.simulate(10'000);
-        if (distance < res.x) {
-            distance = res.x;
-            resAngle = angle;
-        }
-    }
-    logI("Optimal angle:", 180.0 / M_PI * resAngle);
-    logI("Max distance:", distance);
-
-    ///Simulating best trajectory
-    Simulator::Params initialParams = {};
-    initialParams.x = 0;
-    initialParams.y = 0;
-    initialParams.vX = 1600 * cos(resAngle);
-    initialParams.vY = 1600 * sin(resAngle);
-    initialParams.mass = 120;
-    initialParams.csa = M_PI * 0.21 * 0.21 / 4;
-    initialParams.airDensity = Atmosphere::getDensity;
-    initialParams.gravity = gravity;
-    initialParams.dragCoefficient = DragCoefficients::get;
-    initialParams.airSpeed = Atmosphere::getAirSpeed;
-    initialParams.handler = observer;
-
-    //logI(initialParams.vX,initialParams.vY);
-    Simulator simulator(initialParams, 0.1);
-    simulator.simulate(10'000);
-
-    log();
+void tests::testRKF45() {
+    double y[2] = {3, 0};
+    RKF45Integrator integrator(equation, 2, nullptr);
+    double start = 0;
+    integrator.integrate(y, &start, 1);
+    logI(y[0], y[1]);
 }

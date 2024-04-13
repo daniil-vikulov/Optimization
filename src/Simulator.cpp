@@ -2,8 +2,8 @@
 
 #include <cmath>
 #include <gsl/gsl_errno.h>
-#include <gsl/gsl_matrix.h>
 #include <gsl/gsl_odeiv2.h>
+#include "maths/RKF45Integrator.h"
 
 #include "physics/Atmosphere.h"
 #include "utils/Logger.h"
@@ -17,8 +17,6 @@ Simulator::Simulator(Simulator::Params initialParams, double timeStep) {
 }
 
 Simulator::Params Simulator::simulate(double endTime) {
-    Params out = _params;
-
     arr[0] = _params.x;
     arr[1] = _params.vX;
     arr[2] = _params.y;
@@ -47,6 +45,40 @@ Simulator::Params Simulator::simulate(double endTime) {
     }
 
     gsl_odeiv2_driver_free(driver);
+
+    return _params;
+}
+
+Simulator::Params Simulator::simulate2(double endTime) {
+    arr[0] = _params.x;
+    arr[1] = _params.vX;
+    arr[2] = _params.y;
+    arr[3] = _params.vY;
+
+    RKF45Integrator integrator(function, 4, &_params);
+    double t = _params.time;
+
+    integrator.integrate(arr, &t, t + _timeStep);
+
+    _params.x = arr[0];
+    _params.vX = arr[1];
+    _params.y = arr[2];
+    _params.vY = arr[3];
+    _params.time = t;
+
+    while (t < endTime) {
+        integrator.integrate(arr, &t, t + _timeStep);
+
+        _params.x = arr[0];
+        _params.vX = arr[1];
+        _params.y = arr[2];
+        _params.vY = arr[3];
+        _params.time = t;
+
+        if (!_params.handler(_params.x, _params.y, _params.vX, _params.vY, _params.time)) {
+            break;
+        }
+    }
 
     return _params;
 }

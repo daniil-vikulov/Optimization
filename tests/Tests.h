@@ -1,7 +1,5 @@
 #pragma once
 
-#include "utils/Logger.h"
-
 namespace adaai::tests {
     void printDc();
 
@@ -13,4 +11,6 @@ namespace adaai::tests {
 
     ///@brief here is all the answers, required at LAB-6 (Paris cannon)
     void solution();
+
+    void testRKF45();
 }
