@@ -11,10 +11,6 @@ EHIntegrator::~EHIntegrator() {
 
 }
 
-void EHIntegrator::integrate(double *y, double *tStart, double tEnd) {
-
-}
-
-bool EHIntegrator::step(double t, double &h, double *y) {
-    return true;
+void EHIntegrator::integrate(double *y_0, double *y_prime_0, double t_0, double h) {
+    //Do smth
 }
