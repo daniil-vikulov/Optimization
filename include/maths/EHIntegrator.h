@@ -24,13 +24,21 @@ namespace adaai::solution {
         ///@brief number of interpolation nodes (t_0, t_1 .. t_{k-1}, t_k = t_0 + h)
         constexpr int K = 6;
 
+        constexpr double Tolerance = 1e-6;
+
         ///@brief dimension of vectors to operate with. Say, y, y', y''. Correspondingly, f: R^{2*n+1} - > R^n
         int _dimension;
 
-        ///@brief [nodeIndex][dimension]
+        ///@brief y from previous correction step
+        std::vector<double> _yPrevious;
+
+        ///@brief y' from previous correction step
+        std::vector<double> _yPrimePrevious;
+
+        ///@brief Holds y(t), where t - is a node time point. Format: [nodeIndex][dimension]
         std::vector<std::vector<double> > _yInNodes;
 
-        ///@brief [nodeIndex][dimension]
+        ///@brief Holds y'(t), where t - is a node time point. Format: [nodeIndex][dimension]
         std::vector<std::vector<double> > _yPrimeInNodes;
 
         ///@brief [nodeIndex][dimension]
@@ -58,5 +66,9 @@ namespace adaai::solution {
 
         ///@brief fills _dd array with divided difference
         void fillDD(double t0);
+
+        static double getSquaredDistance(const std::vector<double> &point1, const std::vector<double> &point2);
+
+        bool doFinish() const;
     };
 }

@@ -16,13 +16,14 @@ EHIntegrator::EHIntegrator(const Equation equation, const int dimension, void *p
 
 void EHIntegrator::integrate(std::vector<double> &y0, std::vector<double> &yPrime0, const double t0,
                              const double h) {
-    constexpr int interations = 15; //TODO make dynamic
-
     std::copy(y0.begin(), y0.end(), _yInNodes[0].begin());
     std::copy(yPrime0.begin(), yPrime0.end(), _yPrimeInNodes[0].begin());
 
-    for (int i = 0; i < interations; ++i) {
+
+    while (!doFinish()) {
         step(t0, h);
+        std::copy(_yInNodes[K].begin(), _yInNodes[K].end(), _yPrevious.begin());
+        std::copy(_yPrimeInNodes[K].begin(), _yPrimeInNodes[K].end(), _yPrimePrevious.begin());
     }
 
     std::copy(_yInNodes[K - 1].begin(), _yInNodes[K - 1].end(), y0.begin());
@@ -51,6 +52,13 @@ void EHIntegrator::step(const double t0, const double h) {
     }
 }
 
+bool EHIntegrator::doFinish() const {
+    const double distance1 = getSquaredDistance(_yPrimeInNodes[K], _yPrimePrevious) < Tolerance;
+    const double distance2 = getSquaredDistance(_yInNodes[K], _yPrevious);
+
+    return std::max(distance1, distance2) < Tolerance;
+}
+
 void EHIntegrator::fillB(const double t0) {
     fillDD(t0);
 
@@ -70,4 +78,14 @@ void EHIntegrator::fillDD(const double t0) {
             }
         }
     }
+}
+
+
+double EHIntegrator::getSquaredDistance(const std::vector<double> &point1, const std::vector<double> &point2) {
+    double squaredSum = 0;
+    for (int i = 0; i < point1.size(); ++i) {
+        squaredSum += (point2[i] - point1[i]) * (point2[i] - point1[i]);
+    }
+
+    return squaredSum;
 }
