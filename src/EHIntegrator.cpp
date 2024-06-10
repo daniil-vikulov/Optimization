@@ -31,7 +31,7 @@ void EHIntegrator::integrate(std::vector<double> &y0, std::vector<double> &yPrim
 }
 
 void EHIntegrator::step(const double t0, const double h) {
-    fillB(t0);
+    fillB(t0, h);
 
     for (int i = 1; i < K; ++i) {
         for (int j = 0; j < _dimension; ++j) {
@@ -59,10 +59,25 @@ bool EHIntegrator::doFinish() const {
     return std::max(distance1, distance2) < Tolerance;
 }
 
-void EHIntegrator::fillB(const double t0) {
+void EHIntegrator::fillB(const double t0, const double h) {
     fillDD(t0);
 
-    //TODO calculate _b
+    const std::vector<double> a = _dd[0][1];
+    const std::vector<double> b = _dd[0][2];
+    const std::vector<double> c = _dd[0][3];
+    const std::vector<double> d = _dd[0][4];
+    const std::vector<double> e = _dd[0][5];
+    const std::vector<double> f = _dd[0][6];
+
+    for (int i = 0; i < _dimension; i++) {
+        _b[0][i] = a[i];
+        _b[1][i] = b[i] + c[i] * h / 5 + 2 * d[i] * pow(h, 2) / 25 + 24 * f[i] * pow(h, 4) / 625 +
+                   6 * e[i] * pow(h, 3) / 125;
+        _b[2][i] = c[i] + 3 * d[i] * h / 5 + 2 * f[i] * pow(h, 3) / 5 + 11 * e[i] * pow(h, 2) / 25;
+        _b[3][i] = d[i] + 7 * f[i] * pow(h, 5) + e[i] * h;
+        _b[4][i] = 2 * f[i] * h + e[i];
+        _b[5][i] = f[i];
+    }
 }
 
 void EHIntegrator::fillDD(const double t0) {

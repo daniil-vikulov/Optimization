@@ -62,7 +62,7 @@ namespace adaai::solution {
         void step(double t0, double h);
 
         ///@brief fills _b array with coefficients, calculated with _dd
-        void fillB(double t0);
+        void fillB(double t0, double h);
 
         ///@brief fills _dd array with divided difference
         void fillDD(double t0);
