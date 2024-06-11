@@ -62,10 +62,10 @@ namespace adaai::solution {
         void step(double t0, double h);
 
         ///@brief fills _b array with coefficients, calculated with _dd
-        void fillB(double t0, double h);
+        void updateB(double t0, double h);
 
         ///@brief fills _dd array with divided difference
-        void fillDD(double t0);
+        void updateDD(double t0);
 
         static double getSquaredDistance(const std::vector<double> &point1, const std::vector<double> &point2);
 
