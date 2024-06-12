@@ -1,2 +1,3 @@
-# Optimization
-Repository for labs in best subject ever!!!
+# Numerical methods and optimizations
+
+HSE SPb, ADA&AI, Spring 2024
